@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/07 15:19:49 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/07 18:13:14 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_philo_times convert_times(int argc, char **argv)
 {
 	t_philo_times	times;
 
+	times.nbr_of_philo = ft_atoui_check(argv[1]);
 	times.start_time = get_current_time_ms();
 	times.time_to_die = ft_atoui_check(argv[2]);
 	times.time_to_eat = ft_atoui_check(argv[3]);
