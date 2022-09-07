@@ -6,7 +6,7 @@
 #    By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/04 16:28:53 by vhaefeli          #+#    #+#              #
-#    Updated: 2022/08/26 11:21:39 by vhaefeli         ###   ########.fr        #
+#    Updated: 2022/09/07 16:35:41 by vhaefeli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ SRCS_DIR 		= ./src
 OBJS_DIR 		= ./obj
 LIBS			= -pthread
 _SRCS 			= philo.c\
+					ft_time.c\
+					est_sleep_live.c
 
 
 OBJS 			= $(patsubst %.c, $(OBJS_DIR)/%.o, $(_SRCS))

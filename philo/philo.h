@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 21:44:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/08/26 11:28:48 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/07 16:54:36 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,27 @@
 # include <curses.h>
 # include <pthread.h>
 
-typedef struct s_list
+typedef struct s_philo
 {
-	int				philo_nb;
-	bool			fork_available;
+	unsigned int	philo_nb;
 	pthread_mutex_t mutex_on_fork;
-	float			time_eating;
-	float			time_sleeping;
-	float			time_alive;
-	int				nb_meal_eaten;
-	struct s_list	next_philo;
-} t_list;
+	unsigned int	time_eating;
+	unsigned int	time_sleeping;
+	unsigned int	time_alive;
+	unsigned int	nb_meal_eaten;
+} t_philo;
 
+typedef struct s_philo_times
+{
+	unsigned int	nbr_of_philo;
+	unsigned int	start_time;
+	unsigned int	time_to_die;
+	unsigned int	time_to_eat;
+	unsigned int	time_to_sleep;
+	unsigned int	nb_meal_eaten;
+} t_philo_times;
 
+unsigned int	ft_atoui_check(const char *str);
+long			get_current_time_ms(void);
 
 #endif

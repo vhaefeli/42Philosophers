@@ -23,7 +23,8 @@ unsigned int	ft_atoui_check(const char *str)
 			nb = (nb * 10) + (*str - 48);
 		else
 		{
-			write(1, "Please write the different timings in correct Unsigned Int format\n", 67);
+			write(1, "Please write the different timings", 34);
+			write(1," in correct Unsigned Int format\n", 32);
 			return (0);
 		}
 		str++;
