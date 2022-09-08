@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 14:20:06 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/07 18:11:56 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/08 22:40:10 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,35 +23,55 @@ timestamp_in_ms X has taken a fork
 ◦ timestamp_in_ms X is thinking
 ◦ timestamp_in_ms X died
 
-void	ft_shift(int i, int nb, )
-{
-	if (nb % 2 == 0)
-		if (i % 2 == 1)
-			usleep(1);
-}
-
-void	*eat_sleep_live(t_philo *philo, i, t_philo_times times)
+void	*eat_sleep_live_even(t_philo *philo, i)
 {
 	int	n;
 
-	if (i == times.nbr_of_philo)
-		n = 0;
-	else
-		n = i + 1;
-	if(philo[i].nb_meal_eaten == 0 || times.nbr_of_phile % 2 != 0)
-		ft_shift(i, times.nbr_of_philo, philo);
-	while(philosopher.time_alive <= get_curren0t_time_ms())
+	n = philo[i].neighbour;
+	while(philo[i]->time_alive <= get_curren0t_time_ms())
 	{
-		pthread_mutex_lock(&philo[i].mutex_on_fork);
-		if (pthread_mutex_lock(&philo[n].mutex_on_fork) != 0)
-			pthread_mutex_unlock(&philo[i].mutex_on_fork);
-		printf("%u ", chrono(times.start_time), ))
-		usleep(times.time_to_eat);
-		pthread_mutex_unlock(&philo[i].mutex_on_fork);
-		if (i == times.nbr_of_philo)
-			pthread_mutex_unlock(&philo[0].mutex_on_fork);
-		else
-			pthread_mutex_unlock(&philo[i + 1].mutex_on_fork);
+		if (philo[n].nb_meal_eaten > philo[i].nb_meal_eaten)
+		{
+			pthread_mutex_lock(&philo[n].mutex_on_fork);
+			printf("%u %d has taken a fork\n", 
+				chrono(philo[i].times->start_time), i + 1);
+			pthread_mutex_lock(&philo[i].mutex_on_fork);
+			printf("%u %d has taken a fork\n", 
+				chrono(philo[i].times->start_time), i + 1);
+			philo[i].nb_meal_eaten++;
+			philo[i].time_alive = get_curren0t_time_ms() + philo[i].t->time_to_die;
+			printf("%u %d is eating\n", chrono(philo[i].t->start_time), i + 1);
+			if (check_death(philo[i].t->time_to_die, 0, philo[i].t->time_to_eat)
+				break;
 
+			usleep(philo[i].times->time_to_eat);
+			pthread_mutex_unlock(&philo[n].mutex_on_fork);
+			pthread_mutex_unlock(&philo[i].mutex_on_fork);
+
+			printf("%u %d is sleeping\n", 
+				chrono(philo[i].times->start_time), i + 1);
+		}
+	}
+	if (philo[i]->time_alive <= get_curren0t_time_ms())
+
+
+
+}
+
+void	*eat_sleep_live_odd(t_philo *philo, i, t_philo_times times)
+
+
+void	*eat_sleep_live(void *argument)
+{
+	t_routine_arg	*routine_arg;
+	int				i;
+
+	routine_arg = (t_philo *)argument;
+	i = routine_arg->i;
+{
+	if (i % 2 == 0)
+		eat_sleep_live_even(routine_arg->philo_congregation, i);
+	else
+		eat_sleep_live_odd(routine_arg->philo_congregation, i);
 
 }

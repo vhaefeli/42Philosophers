@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/07 18:13:14 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/08 22:40:12 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,21 @@ t_philo init_philo(t_philo_times times, int i)
 	t_philo	philosopher;
 
 	philosopher.philo_nb = i;
+	if (i == 0)
+		philosopher.neighbour = times.nbr_of_philo - 1;
+	else
+		philosopher.neighbour = i - 1;
 	pthread_mutex_init(&philosopher.mutex_on_fork, NULL);
 	philosopher.time_alive = get_current_time_ms() + times.time_to_die;
 	philosopher.nb_meal_eaten = 0;
+	philosopher.times =	&times;
 	return (philosopher);
 }
 
-t_philo reinit_philo(t_philo_times times, int i)
+void reinit_philo(t_philo *philo, int i)
 {
-	t_philo	philosopher;
-
-	philosopher.philo_nb = i;
-	philosopher.time_eating = times.time_to_eat;
-	philosopher.time_sleeping = times.time_to_sleep;
-	philosopher.time_alive = times.time_to_die;
-	return (philosopher);
+	philo->time_alive = philo->times.time_to_die;
 }
-
-
 
 t_philo_times convert_times(int argc, char **argv)
 {
@@ -51,6 +48,7 @@ t_philo_times convert_times(int argc, char **argv)
 		times.nb_meal_eaten = ft_atoui_check(arg[5]);
 	else
 		times.nb_meal_eaten = 4294967295;
+	return (times);
 }
 
 t_philo	*philo_congregation(int argc, char **argv)
@@ -75,6 +73,21 @@ t_philo	*philo_congregation(int argc, char **argv)
 
 }
 
+t_routine_arg	*init_routine_arg(t_philo *philo_congregation, int nbr_of_philo)
+{
+	t_routine_arg	*routine_arguments;
+	int				i;
+
+	i = 0;
+	while (i < nbr_of_philo)
+	{
+		routine_arguments->i = i;
+		routine_arguments->philo_congregation = philo_congregation;
+		i++;
+	}
+	return (routine_arguments);
+}
+
 
 int mails = 0;
 pthread_mutex_t mutex;
@@ -92,7 +105,7 @@ int main(int argc, char* argv[]) {
     int i;
     pthread_mutex_init(&mutex, NULL);
     for (i = 0; i < 8; i++) {
-        if (pthread_create(th + i, NULL, &routine, NULL) != 0) {
+        if (pthread_create(th + i, NULL, &routine, &routine_arguments[i]) != 0) {
             perror("Failed to create thread");
             return 1;
         }
