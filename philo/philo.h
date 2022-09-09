@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 21:44:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/09 08:12:08 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/09 11:32:59 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ typedef struct s_philo_times
 	unsigned int	t_to_die;
 	unsigned int	t_to_eat;
 	unsigned int	t_to_sleep;
-	unsigned int	nb_meal_eaten;
+	unsigned int	nb_meal_max_eaten;
+	pthread_mutex_t	mutex_on_write;
+	unsigned int	philo_full;
+	unsigned int	philo_dead;
 } t_philo_times;
 
 typedef struct	s_routine_arg

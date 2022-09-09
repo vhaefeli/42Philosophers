@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 14:20:06 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/09 08:28:13 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/09 11:32:51 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,40 @@ timestamp_in_ms X has taken a fork
 ◦ timestamp_in_ms X is thinking
 ◦ timestamp_in_ms X died
 
+void	pt_printf(char *msg, int moment, int philo_nb, s_philo_times *times)
+{
+	pthread_mutex_lock(&times.mutex_on_write);
+	printf("%u %d %s\n", moment, philo_nb, msg);
+	pthread_mutex_unlock(&times.mutex_on_write);
+}
+
 int	*philo_eat(t_philo *philo, i)
 {
 	int	n;
 
 	n = philo[i].neighbour;
 	pthread_mutex_lock(&philo[n].mutex_on_fork);
-	printf("%u %d has taken a fork\n", 
-		chrono(philo[i].t->start_time), i + 1);
+	pt_printf("has taken a fork",
+		chrono(philo[i].t->start_time), i + 1, philo[i].t);
 	pthread_mutex_lock(&philo[i].mutex_on_fork);
-	printf("%u %d has taken a fork\n", 
-		chrono(philo[i].t->start_time), i + 1);
+	pt_printf("has taken a fork",
+		chrono(philo[i].t->start_time), i + 1, philo[i].t);
 	philo[i].nb_meal_eaten++;
 	philo[i].time_alive = get_current_time_ms() + philo[i].t->t_to_die;
-	printf("%u %d is eating\n", chrono(philo[i].t->start_time), i + 1);
+	pt_printf("is eating", chrono(philo[i].t->start_time), i + 1, philo[i].t);
 	if (check_death(philo[i].t, 1)
 		return (1);
 	usleep(philo[i].t->t_to_eat);
 	pthread_mutex_unlock(&philo[n].mutex_on_fork);
 	pthread_mutex_unlock(&philo[i].mutex_on_fork);
+	if(philo[i].nb_meal_eaten == philo[i].t->nb_meal_max_eaten)
+		return (1);
 	return (0);
 }
 
 int	*philo_sleep(t_philo *philo, i)
 {
-	printf("%u %d is sleeping\n", chrono(philo[i].t->start_time), i + 1);
+	pt_printf("is sleeping", chrono(philo[i].t->start_time), i + 1, philo[i].t);
 	if (check_death(philo[i].t, 2)
 		return (1);
 	usleep(philo[i].t->t_to_sleep);
@@ -65,15 +74,15 @@ void	*eat_sleep_live_even(t_philo *philo, i)
 		{
 			if (philo_eat(philo, i))
 				break;
-			
-
-			printf("%u %d is sleeping\n", 
-				chrono(philo[i].t->start_time), i + 1);
+			if (philo_sleep(philo, i))
+				break;
+			pt_printf("is thinking",
+				chrono(philo[i].t->start_time), i + 1, philo[i].t);
 		}
 	}
 	if (philo[i]->time_alive <= get_curren0t_time_ms())
 	{
-		printf("%u %d has taken a fork\n", 
+		printf("%u %d has taken a fork\n",
 				chrono(philo[i].t->start_time), i + 1);
 	}
 

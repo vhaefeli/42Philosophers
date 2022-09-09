@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/09 08:28:17 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/09 11:33:59 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ t_philo init_philo(t_philo_times times, int i)
 	else
 		philosopher.neighbour = i - 1;
 	pthread_mutex_init(&philosopher.mutex_on_fork, NULL);
-	philosopher.time_alive = get_current_time_ms() + times.t_to_die;
+	philosopher.t_alive = get_current_time_ms() + times.t_to_die;
 	philosopher.nb_meal_eaten = 0;
-	philosopher.times =	&times;
+	philosopher.t =	&times;
 	return (philosopher);
 }
 
 void reinit_philo(t_philo *philo, int i)
 {
-	philo->time_alive = philo->times.t_to_die;
+	philo->t_alive = philo->t.t_to_die;
 }
 
 t_philo_times convert_times(int argc, char **argv)
@@ -45,9 +45,11 @@ t_philo_times convert_times(int argc, char **argv)
 	times.t_to_eat = ft_atoui_check(argv[3]);
 	times.t_to_sleep = ft_atoui_check(argv[4]);
 	if (argc == 6)
-		times.nb_meal_eaten = ft_atoui_check(arg[5]);
+		times.nb_meal_max_eaten = ft_atoui_check(argv[5]);
 	else
-		times.nb_meal_eaten = 4294967295;
+		times.nb_meal_max_eaten = 4294967295;
+	pthread_mutex_init(&times.mutex_on_write, NULL);
+	times.philo_full = 0;
 	return (times);
 }
 
