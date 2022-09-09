@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 14:20:06 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/08 22:40:10 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/09 08:28:13 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,36 +23,59 @@ timestamp_in_ms X has taken a fork
 ◦ timestamp_in_ms X is thinking
 ◦ timestamp_in_ms X died
 
+int	*philo_eat(t_philo *philo, i)
+{
+	int	n;
+
+	n = philo[i].neighbour;
+	pthread_mutex_lock(&philo[n].mutex_on_fork);
+	printf("%u %d has taken a fork\n", 
+		chrono(philo[i].t->start_time), i + 1);
+	pthread_mutex_lock(&philo[i].mutex_on_fork);
+	printf("%u %d has taken a fork\n", 
+		chrono(philo[i].t->start_time), i + 1);
+	philo[i].nb_meal_eaten++;
+	philo[i].time_alive = get_current_time_ms() + philo[i].t->t_to_die;
+	printf("%u %d is eating\n", chrono(philo[i].t->start_time), i + 1);
+	if (check_death(philo[i].t, 1)
+		return (1);
+	usleep(philo[i].t->t_to_eat);
+	pthread_mutex_unlock(&philo[n].mutex_on_fork);
+	pthread_mutex_unlock(&philo[i].mutex_on_fork);
+	return (0);
+}
+
+int	*philo_sleep(t_philo *philo, i)
+{
+	printf("%u %d is sleeping\n", chrono(philo[i].t->start_time), i + 1);
+	if (check_death(philo[i].t, 2)
+		return (1);
+	usleep(philo[i].t->t_to_sleep);
+	return (0);
+}
+
 void	*eat_sleep_live_even(t_philo *philo, i)
 {
 	int	n;
 
 	n = philo[i].neighbour;
-	while(philo[i]->time_alive <= get_curren0t_time_ms())
+	while(philo[i]->time_alive <= get_current_time_ms())
 	{
 		if (philo[n].nb_meal_eaten > philo[i].nb_meal_eaten)
 		{
-			pthread_mutex_lock(&philo[n].mutex_on_fork);
-			printf("%u %d has taken a fork\n", 
-				chrono(philo[i].times->start_time), i + 1);
-			pthread_mutex_lock(&philo[i].mutex_on_fork);
-			printf("%u %d has taken a fork\n", 
-				chrono(philo[i].times->start_time), i + 1);
-			philo[i].nb_meal_eaten++;
-			philo[i].time_alive = get_curren0t_time_ms() + philo[i].t->time_to_die;
-			printf("%u %d is eating\n", chrono(philo[i].t->start_time), i + 1);
-			if (check_death(philo[i].t->time_to_die, 0, philo[i].t->time_to_eat)
+			if (philo_eat(philo, i))
 				break;
-
-			usleep(philo[i].times->time_to_eat);
-			pthread_mutex_unlock(&philo[n].mutex_on_fork);
-			pthread_mutex_unlock(&philo[i].mutex_on_fork);
+			
 
 			printf("%u %d is sleeping\n", 
-				chrono(philo[i].times->start_time), i + 1);
+				chrono(philo[i].t->start_time), i + 1);
 		}
 	}
 	if (philo[i]->time_alive <= get_curren0t_time_ms())
+	{
+		printf("%u %d has taken a fork\n", 
+				chrono(philo[i].t->start_time), i + 1);
+	}
 
 
 

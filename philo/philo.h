@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 21:44:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/08 22:40:07 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/09 08:12:08 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_philo
 	pthread_mutex_t mutex_on_fork;
 	// unsigned int	time_eating;
 	// unsigned int	time_sleeping;
-	unsigned int	time_alive;
+	unsigned int	t_alive;
 	unsigned int	nb_meal_eaten;
 	t_philo_times	*t;
 } t_philo;
@@ -44,9 +44,9 @@ typedef struct s_philo_times
 {
 	unsigned int	nbr_of_philo;
 	unsigned int	start_time;
-	unsigned int	time_to_die;
-	unsigned int	time_to_eat;
-	unsigned int	time_to_sleep;
+	unsigned int	t_to_die;
+	unsigned int	t_to_eat;
+	unsigned int	t_to_sleep;
 	unsigned int	nb_meal_eaten;
 } t_philo_times;
 
@@ -57,6 +57,6 @@ typedef struct	s_routine_arg
 } t_routine_arg;
 
 unsigned int	ft_atoui_check(const char *str);
-long			get_current_time_ms(void);
+unsigned int	get_current_time_ms(void);
 
 #endif

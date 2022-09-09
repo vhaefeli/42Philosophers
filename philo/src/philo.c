@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/08 22:40:12 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/09 08:28:17 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_philo init_philo(t_philo_times times, int i)
 	else
 		philosopher.neighbour = i - 1;
 	pthread_mutex_init(&philosopher.mutex_on_fork, NULL);
-	philosopher.time_alive = get_current_time_ms() + times.time_to_die;
+	philosopher.time_alive = get_current_time_ms() + times.t_to_die;
 	philosopher.nb_meal_eaten = 0;
 	philosopher.times =	&times;
 	return (philosopher);
@@ -32,7 +32,7 @@ t_philo init_philo(t_philo_times times, int i)
 
 void reinit_philo(t_philo *philo, int i)
 {
-	philo->time_alive = philo->times.time_to_die;
+	philo->time_alive = philo->times.t_to_die;
 }
 
 t_philo_times convert_times(int argc, char **argv)
@@ -41,9 +41,9 @@ t_philo_times convert_times(int argc, char **argv)
 
 	times.nbr_of_philo = ft_atoui_check(argv[1]);
 	times.start_time = get_current_time_ms();
-	times.time_to_die = ft_atoui_check(argv[2]);
-	times.time_to_eat = ft_atoui_check(argv[3]);
-	times.time_to_sleep = ft_atoui_check(argv[4]);
+	times.t_to_die = ft_atoui_check(argv[2]);
+	times.t_to_eat = ft_atoui_check(argv[3]);
+	times.t_to_sleep = ft_atoui_check(argv[4]);
 	if (argc == 6)
 		times.nb_meal_eaten = ft_atoui_check(arg[5]);
 	else

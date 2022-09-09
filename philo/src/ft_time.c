@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:17:11 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/08 22:40:08 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/09 08:15:36 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,16 @@ unsigned int	chrono(int start_time)
 int	check_death(t_philo_times t, int phase)
 {
 
-	if(phase = 1 && t.time_to_die <= t.time_to_eat)
+	if(phase = 1 && t.t_to_die <= t.t_to_eat)
 	{
-		usleep(t.time_to_die);
+		usleep(t.t_to_die);
 		return (1);
 	}
-	if (phase = 2 && t.time_to_die <= t.time_to_eat + t.time_to_sleep)
+	if (phase = 2 && t.t_to_die <= t.t_to_eat + t.t_to_sleep)
 	{
-		usleep(t.time_to_die - t.time_to_eat);
+		usleep(t.t_to_die - t.t_to_eat);
 		return (1);
 	}
 	else
 		return (0);
 }
-
-
-
-◦ timestamp_in_ms X has taken a fork ◦ timestamp_in_ms X is eating
-◦ timestamp_in_ms X is sleeping
-◦ timestamp_in_ms X is thinking
-◦ timestamp_in_ms X died
