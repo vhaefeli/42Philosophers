@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 21:44:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/09 11:32:59 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/14 23:15:07 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,27 @@ typedef struct s_philo_times
 typedef struct	s_routine_arg
 {
 	int		i;
-	t_philo	*philo_congregation;
+	t_philo	**philo_congregation;
 } t_routine_arg;
 
 unsigned int	ft_atoui_check(const char *str);
+
 unsigned int	get_current_time_ms(void);
+unsigned int	chrono(int start_time);
+
+int		check_death(t_philo_times *t, int phase);
+void	pt_printf(char *msg, int moment, int philo_nb, t_philo_times *times);
+void	ft_philo_end(pthread_t **th, t_philo **philo_congr);
+
+int		philo_eat(t_philo **philo, int i);
+int		philo_sleep(t_philo **philo, int i);
+void	*eat_sleep_live_even(t_philo **philo, int i);
+void	*eat_sleep_live_odd(t_philo **philo, int i, t_philo_times times);
+void	*eat_sleep_live(void *argument);
+
+t_philo 		init_philo(t_philo_times times, int i);
+t_philo_times 	convert_times(int argc, char **argv);
+t_philo			**philo_congregation(int argc, char **argv);
+t_routine_arg	*init_routine_arg(t_philo **philo_congregation);
 
 #endif

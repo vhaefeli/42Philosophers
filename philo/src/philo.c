@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/09 11:33:59 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/14 23:15:02 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@ t_philo init_philo(t_philo_times times, int i)
 	return (philosopher);
 }
 
-void reinit_philo(t_philo *philo, int i)
-{
-	philo->t_alive = philo->t.t_to_die;
-}
-
 t_philo_times convert_times(int argc, char **argv)
 {
 	t_philo_times	times;
@@ -50,10 +45,11 @@ t_philo_times convert_times(int argc, char **argv)
 		times.nb_meal_max_eaten = 4294967295;
 	pthread_mutex_init(&times.mutex_on_write, NULL);
 	times.philo_full = 0;
+	times.philo_dead = 0;
 	return (times);
 }
 
-t_philo	*philo_congregation(int argc, char **argv)
+t_philo	**philo_congregation(int argc, char **argv)
 {
 	t_philo 		*philo_congr;
 	t_philo_times	times;
@@ -69,19 +65,18 @@ t_philo	*philo_congregation(int argc, char **argv)
 		philo_congr[i] = init_philo(times, i);
 		i++;
 	}
-
-
-
-
+	return (&philo_congr);
 }
 
-t_routine_arg	*init_routine_arg(t_philo *philo_congregation, int nbr_of_philo)
+t_routine_arg	*init_routine_arg(t_philo **philo_congregation)
 {
 	t_routine_arg	*routine_arguments;
 	int				i;
+	int				n;
 
 	i = 0;
-	while (i < nbr_of_philo)
+	n = philo_congregation[i]->t->nbr_of_philo;
+	while (i < n)
 	{
 		routine_arguments->i = i;
 		routine_arguments->philo_congregation = philo_congregation;
@@ -90,36 +85,27 @@ t_routine_arg	*init_routine_arg(t_philo *philo_congregation, int nbr_of_philo)
 	return (routine_arguments);
 }
 
+int main(int argc, char* argv[]) 
+{
+	pthread_t		th[ft_atoui_check(argv[1])];
+	int				i;
+	int				n;
+	t_philo			**philo_congr;
+	t_routine_arg	*routine_arg;
 
-int mails = 0;
-pthread_mutex_t mutex;
-
-void* routine() {
-    for (int i = 0; i < 10000000; i++) {
-        pthread_mutex_lock(&mutex);
-        mails++;
-        pthread_mutex_unlock(&mutex);
-    }
-}
-
-int main(int argc, char* argv[]) {
-    pthread_t th[8];
-    int i;
-    pthread_mutex_init(&mutex, NULL);
-    for (i = 0; i < 8; i++) {
-        if (pthread_create(th + i, NULL, &routine, &routine_arguments[i]) != 0) {
-            perror("Failed to create thread");
-            return 1;
-        }
-        printf("Thread %d has started\n", i);
-    }
-    for (i = 0; i < 8; i++) {
-        if (pthread_join(th[i], NULL) != 0) {
-            return 2;
-        }
-        printf("Thread %d has finished execution\n", i);
-    }
-    pthread_mutex_destroy(&mutex);
-    printf("Number of mails: %d\n", mails);
-    return 0;
+	i = 0;
+	philo_congr = philo_congregation(argc, argv);
+	n = philo_congr[i]->t->nbr_of_philo;
+	routine_arg = init_routine_arg(philo_congr)
+	while (i < n)
+	{
+		if (pthread_create(th + i, NULL, &eat_sleep_live, &routine_arguments[i]) != 0)
+		{
+			printf("Failed to create thread");
+			return 1;
+		}
+		i++;
+	}
+	ft_philo_end(&th, philo_congr);
+	return 0;
 }

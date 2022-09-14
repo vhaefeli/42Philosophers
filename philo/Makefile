@@ -6,7 +6,7 @@
 #    By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/04 16:28:53 by vhaefeli          #+#    #+#              #
-#    Updated: 2022/09/07 16:35:41 by vhaefeli         ###   ########.fr        #
+#    Updated: 2022/09/14 21:37:04 by vhaefeli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,9 @@ OBJS_DIR 		= ./obj
 LIBS			= -pthread
 _SRCS 			= philo.c\
 					ft_time.c\
-					est_sleep_live.c
-
+					eat_sleep_live.c\
+					ft_atoui_check.c\
+					philo_utils.c
 
 OBJS 			= $(patsubst %.c, $(OBJS_DIR)/%.o, $(_SRCS))
 SRCS 			= $(patsubst %, $(SRCS_DIR)/%, $(_SRCS))
@@ -31,7 +32,6 @@ all: $(TARGET)
 clean:
 	rm -f $(OBJS)
 	rm -d $(OBJS_DIR)
-
 
 fclean: clean
 	rm -f $(TARGET)
