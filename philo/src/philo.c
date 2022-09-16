@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/16 09:15:57 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/16 11:32:22 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ t_philo *init_philo(t_philo_times *times, int i)
 	philosopher->t_alive = get_current_time_ms() + times->t_to_die;
 	philosopher->nb_meal_eaten = 0;
 	philosopher->t = times;
-	printf("times add %p\n", times);
+	// printf("times add %p\n", times);
+	// printf("philosopher->neighbour %u\n", philosopher->neighbour);
 	return (philosopher);
 }
 
@@ -72,50 +73,50 @@ t_philo	**philo_congregation(int argc, char **argv)
 	return (philo_congr);
 }
 
-t_r_arg	*init_routine_arg(t_philo **philo_congr)
+t_r_arg	**init_routine_arg(t_philo **philo_congr)
 {
-	t_r_arg	*routine_arguments;
+	t_r_arg	**routine_arguments;
 	int				i;
 	int				n;
 
 	i = 0;
 	n = philo_congr[i]->t->nbr_of_philo;
-	routine_arguments = malloc(sizeof(t_r_arg));
+	routine_arguments = malloc(sizeof(t_r_arg*) * n);
 	while (i < n)
 	{
-		routine_arguments->i = i;
-		routine_arguments->philo_congr = philo_congr;
+		routine_arguments[i] = malloc(sizeof(t_r_arg));
+		routine_arguments[i]->i = i;
+		routine_arguments[i]->philo_congr = philo_congr;
 		i++;
 	}
 	return (routine_arguments);
 }
 
-int main(int argc, char **argv) 
+int main(int argc, char **argv)
 {
 	pthread_t	*th;
 	int			i;
 	int			n;
 	t_philo		**philo_congr;
-	t_r_arg		*routine_arg;
+	t_r_arg		**routine_arg;
 
 	i = 0;
 	if (argc != 5 && argc != 6)
 		return (error_arg());
 	philo_congr = philo_congregation(argc, argv);
-	printf("aaaaaaaaaaaa\n");
 	n = philo_congr[i]->t->nbr_of_philo;
-	printf("philo congr adr= %p\n", philo_congr);
+	// printf("philo congr adr= %p\n", philo_congr);
 	routine_arg = init_routine_arg(philo_congr);
 	th = malloc(sizeof(pthread_t) * n);
 	while (i < n)
 	{
-		if (pthread_create(th + i, NULL, &eat_sleep_live, &routine_arg[i]) != 0)
+		printf("i: %d\n", i);
+		if (pthread_create(th + i, NULL, &eat_sleep_live, routine_arg[i]) != 0)
 		{
 			printf("Failed to create thread\n");
 			return (1);
 		}
 		i++;
-		printf("i: %d\n", i);
 	}
 	philo_end(th, philo_congr, routine_arg);
 	return (0);

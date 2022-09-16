@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:31:38 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/15 23:10:11 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/16 16:02:30 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,19 @@
 int	check_death(t_philo_times *t, int phase)
 {
 	if(t->philo_dead != 0)
+	{
+		printf("dead\n");
+		return(1);
+	}
 		return(1);
 	if(phase == 1 && t->t_to_die <= t->t_to_eat)
 	{
-		usleep(t->t_to_die);
+		usleep(t->t_to_die * 1000);
 		return (1);
 	}
 	if (phase == 2 && t->t_to_die <= t->t_to_eat + t->t_to_sleep)
 	{
-		usleep(t->t_to_die - t->t_to_eat);
+		usleep(t->t_to_die - t->t_to_eat * 1000);
 		return (1);
 	}
 	else
@@ -46,7 +50,7 @@ int	error_arg(void)
 	return (1);
 }
 
-int	philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg *rout_arg)
+int	philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg **rout_arg)
 {
 	int i;
 	int	n;
@@ -55,13 +59,16 @@ int	philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg *rout_arg)
 	n = philo_congr[i]->t->nbr_of_philo;
 	while (i < n)
 	{
-		pthread_mutex_destroy(&philo_congr[i]->mutex_on_fork);
+		printf("clean i %d\n",i);
 		if (pthread_join(th[i], NULL) != 0)
 		{
 			printf("error in joining thread\n");
 			return (2);
 		}
+		pthread_mutex_destroy(&philo_congr[i]->mutex_on_fork);
 		free(philo_congr[i]);
+		free(rout_arg[i]);
+		i++;
 	}
 	pthread_mutex_destroy(&philo_congr[0]->t->mutex_on_write);
 	free(philo_congr);

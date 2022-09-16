@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 21:44:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/15 23:10:24 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/16 11:08:40 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ unsigned int	chrono(int start_time);
 
 int		check_death(t_philo_times *t, int phase);
 void	pt_printf(char *msg, int moment, int philo_nb, t_philo_times *times);
-int		philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg *rout_arg);
+int		philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg **rout_arg);
 int		error_arg(void);
 
 int		philo_eat(t_philo **philo, int i);
@@ -76,6 +76,6 @@ void	*eat_sleep_live(void *argument);
 t_philo 		*init_philo(t_philo_times *times, int i);
 t_philo_times 	*convert_times(int argc, char **argv);
 t_philo			**philo_congregation(int argc, char **argv);
-t_r_arg			*init_routine_arg(t_philo **philo_congr);
+t_r_arg			**init_routine_arg(t_philo **philo_congr);
 
 #endif
