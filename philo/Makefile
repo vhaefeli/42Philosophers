@@ -6,15 +6,18 @@
 #    By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/04 16:28:53 by vhaefeli          #+#    #+#              #
-#    Updated: 2022/09/14 21:37:04 by vhaefeli         ###   ########.fr        #
+#    Updated: 2022/09/15 17:23:25 by vhaefeli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
+CC				= gcc
 CFLAGS 			= -Wall -Wextra -Werror -g #-fsanitize=address -fno-omit-frame-pointer
 TARGET 			= philo
 SRCS_DIR 		= ./src
 OBJS_DIR 		= ./obj
+INCLUDES_DIRS	= ./includes
+INCLUDES		= $(addprefix -I,$(INCLUDES_DIRS))
 LIBS			= -pthread
 _SRCS 			= philo.c\
 					ft_time.c\
@@ -33,6 +36,7 @@ clean:
 	rm -f $(OBJS)
 	rm -d $(OBJS_DIR)
 
+
 fclean: clean
 	rm -f $(TARGET)
 
@@ -42,12 +46,10 @@ $(OBJS_DIR):
 	@mkdir -p $@
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
-	$(CC) -c $(CFLAGS) -o $@ $^
+	$(CC) -c $(CFLAGS) -o $@ $^ $(INCLUDES)
 
-$(TARGET): $(LIBFT_DIR)/libft.a $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
-
-bonus: $(TARGET)
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(INCLUDES) $(LIBS)
 
 
 

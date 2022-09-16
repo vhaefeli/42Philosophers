@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 23:14:49 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/14 23:15:00 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/15 17:11:16 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ unsigned int	ft_atoui_check(const char *str)
 {
 	unsigned int	nb;
 	int	power;
+
 	nb = 0;
 	power = 0;
 	while (*str == ' ')
@@ -35,7 +36,7 @@ unsigned int	ft_atoui_check(const char *str)
 			nb = (nb * 10) + (*str - 48);
 		else
 		{
-			write(1, "Please write the different timings", 34);
+			write(1, "Please write the different numbers", 34);
 			write(1," in correct Unsigned Int format\n", 32);
 			return (0);
 		}
