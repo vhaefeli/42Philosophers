@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:31:38 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/16 16:02:30 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/16 17:37:49 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,23 @@ int	check_death(t_philo_times *t, int phase)
 {
 	if(t->philo_dead != 0)
 	{
-		printf("dead\n");
+		printf("one dead\n");
 		return(1);
 	}
-		return(1);
 	if(phase == 1 && t->t_to_die <= t->t_to_eat)
 	{
+		printf("t->t_to_die %u<= t->t_to_eat %u", t->t_to_die, t->t_to_eat);
 		usleep(t->t_to_die * 1000);
+		pthread_mutex_lock(&t->mutex_on_write);
+		t->philo_dead = 1;
 		return (1);
 	}
 	if (phase == 2 && t->t_to_die <= t->t_to_eat + t->t_to_sleep)
 	{
+		printf("dead2\n");
 		usleep(t->t_to_die - t->t_to_eat * 1000);
+		pthread_mutex_lock(&t->mutex_on_write);
+		t->philo_dead = 1;
 		return (1);
 	}
 	else
@@ -39,6 +44,12 @@ void	pt_printf(char *msg, int moment, int philo_nb, t_philo_times *times)
 	pthread_mutex_lock(&times->mutex_on_write);
 	printf("%u %d %s\n", moment, philo_nb, msg);
 	pthread_mutex_unlock(&times->mutex_on_write);
+}
+
+void	pt_printfdead(int moment, int philo_nb, t_philo_times *times)
+{
+	pthread_mutex_lock(&times->mutex_on_write);
+	printf("%u %d died\n", moment, philo_nb);
 }
 
 int	error_arg(void)
@@ -59,8 +70,7 @@ int	philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg **rout_arg)
 	n = philo_congr[i]->t->nbr_of_philo;
 	while (i < n)
 	{
-		printf("clean i %d\n",i);
-		if (pthread_join(th[i], NULL) != 0)
+	if (pthread_join(th[i], NULL) != 0)
 		{
 			printf("error in joining thread\n");
 			return (2);
@@ -76,3 +86,5 @@ int	philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg **rout_arg)
 	free(th);
 	return (0);
 }
+
+

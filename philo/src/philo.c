@@ -6,22 +6,22 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/16 11:32:22 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/16 16:35:17 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo *init_philo(t_philo_times *times, int i)
+t_philo *init_philo(t_philo_times *times, unsigned int i)
 {
 	t_philo	*philosopher;
 
 	philosopher = malloc(sizeof(t_philo));
 	philosopher->philo_nb = i;
-	if (i == 0)
-		philosopher->neighbour = times->nbr_of_philo - 1;
+	if (i == times->nbr_of_philo - 1)
+		philosopher->neighbour = 0;
 	else
-		philosopher->neighbour = i - 1;
+		philosopher->neighbour = i + 1;
 	pthread_mutex_init(&philosopher->mutex_on_fork, NULL);
 	philosopher->t_alive = get_current_time_ms() + times->t_to_die;
 	philosopher->nb_meal_eaten = 0;
@@ -37,9 +37,7 @@ t_philo_times *convert_times(int argc, char **argv)
 
 	times = malloc(sizeof(t_philo_times));
 	times->nbr_of_philo = ft_atoui_check(argv[1]);
-	printf("nbre de philo %u\n", times->nbr_of_philo);
 	times->start_time = get_current_time_ms();
-	printf("nbre de philo %u\n", times->nbr_of_philo);
 	times->t_to_die = ft_atoui_check(argv[2]);
 	times->t_to_eat = ft_atoui_check(argv[3]);
 	times->t_to_sleep = ft_atoui_check(argv[4]);
@@ -67,7 +65,7 @@ t_philo	**philo_congregation(int argc, char **argv)
 	while (i < nbr_of_philo)
 	{
 		philo_congr[i] = init_philo(times, i);
-		printf("philo congr [%d] adr: %p\n", i, philo_congr[i]);
+		// printf("philo congr [%d] adr: %p\n", i, philo_congr[i]);
 		i++;
 	}
 	return (philo_congr);
