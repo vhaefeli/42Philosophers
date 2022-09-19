@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 21:44:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/16 16:54:10 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/16 18:39:50 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_philo
 	unsigned int	philo_nb;
 	unsigned int	neighbour;
 	pthread_mutex_t mutex_on_fork;
+	int				fork_mutex_on;
 	unsigned int	t_alive;
 	unsigned int	nb_meal_eaten;
 	t_philo_times	*t;

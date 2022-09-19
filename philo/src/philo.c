@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/16 16:35:17 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/16 18:23:54 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ t_philo *init_philo(t_philo_times *times, unsigned int i)
 	else
 		philosopher->neighbour = i + 1;
 	pthread_mutex_init(&philosopher->mutex_on_fork, NULL);
+	philosopher->fork_mutex_on = 0;
 	philosopher->t_alive = get_current_time_ms() + times->t_to_die;
-	philosopher->nb_meal_eaten = 0;
+	philosopher->nb_meal_eaten = 0;	
 	philosopher->t = times;
 	// printf("times add %p\n", times);
 	// printf("philosopher->neighbour %u\n", philosopher->neighbour);
@@ -108,7 +109,6 @@ int main(int argc, char **argv)
 	th = malloc(sizeof(pthread_t) * n);
 	while (i < n)
 	{
-		printf("i: %d\n", i);
 		if (pthread_create(th + i, NULL, &eat_sleep_live, routine_arg[i]) != 0)
 		{
 			printf("Failed to create thread\n");
