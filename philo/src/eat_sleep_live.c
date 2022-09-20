@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 14:20:06 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/20 21:40:01 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/20 22:04:11 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int	take_forks(t_philo **philo, int i, int n)
 	if (philo[0]->t->philo_dead == 0)
 	{
 		pthread_mutex_lock(&philo[n]->mutex_on_fork);
+		if (philo[0]->t->philo_dead > 0)
+		{
+			pthread_mutex_unlock(&philo[n]->mutex_on_fork);
+			return (1);
+		}
 		pt_printf("has taken a fork",
 			chrono(philo[i]->t->start_time), i + 1, philo[i]->t);
 		pthread_mutex_lock(&philo[i]->mutex_on_fork);

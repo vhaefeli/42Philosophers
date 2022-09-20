@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:31:38 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/20 21:37:09 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/20 22:03:16 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	pt_printfdead(int moment, int philo_nb, t_philo_times *times)
 {
 	pthread_mutex_lock(&times->mutex_on_write);
 	printf("%ums: %d died\n", moment, philo_nb);
-	// pthread_mutex_unlock(&times->mutex_on_write);
+	pthread_mutex_unlock(&times->mutex_on_write);
 }
 
 int	error_arg(void)
@@ -42,6 +42,7 @@ int	philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg **rout_arg)
 
 	i = 0;
 	n = philo_congr[i]->t->nbr_of_philo;
+	pthread_mutex_destroy(&philo_congr[0]->t->mutex_on_write);
 	while (i < n)
 	{
 	if (pthread_join(th[i], NULL) != 0)
@@ -54,7 +55,6 @@ int	philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg **rout_arg)
 		free(rout_arg[i]);
 		i++;
 	}
-	pthread_mutex_destroy(&philo_congr[0]->t->mutex_on_write);
 	free(philo_congr);
 	free(rout_arg);
 	free(th);
