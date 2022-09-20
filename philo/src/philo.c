@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/16 18:23:54 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/20 21:20:32 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,9 @@ t_philo *init_philo(t_philo_times *times, unsigned int i)
 	else
 		philosopher->neighbour = i + 1;
 	pthread_mutex_init(&philosopher->mutex_on_fork, NULL);
-	philosopher->fork_mutex_on = 0;
-	philosopher->t_alive = get_current_time_ms() + times->t_to_die;
+	philosopher->t_alive = times->start_time + times->t_to_die;
 	philosopher->nb_meal_eaten = 0;	
 	philosopher->t = times;
-	// printf("times add %p\n", times);
-	// printf("philosopher->neighbour %u\n", philosopher->neighbour);
 	return (philosopher);
 }
 
@@ -66,7 +63,6 @@ t_philo	**philo_congregation(int argc, char **argv)
 	while (i < nbr_of_philo)
 	{
 		philo_congr[i] = init_philo(times, i);
-		// printf("philo congr [%d] adr: %p\n", i, philo_congr[i]);
 		i++;
 	}
 	return (philo_congr);
@@ -103,8 +99,9 @@ int main(int argc, char **argv)
 	if (argc != 5 && argc != 6)
 		return (error_arg());
 	philo_congr = philo_congregation(argc, argv);
+	if (check_args(philo_congr[0]->t))
+		return (error_arg());
 	n = philo_congr[i]->t->nbr_of_philo;
-	// printf("philo congr adr= %p\n", philo_congr);
 	routine_arg = init_routine_arg(philo_congr);
 	th = malloc(sizeof(pthread_t) * n);
 	while (i < n)
@@ -116,6 +113,8 @@ int main(int argc, char **argv)
 		}
 		i++;
 	}
+	check_all_alive(philo_congr);
 	philo_end(th, philo_congr, routine_arg);
 	return (0);
 }
+

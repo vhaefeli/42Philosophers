@@ -6,58 +6,32 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:31:38 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/16 17:37:49 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/20 21:37:09 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_death(t_philo_times *t, int phase)
-{
-	if(t->philo_dead != 0)
-	{
-		printf("one dead\n");
-		return(1);
-	}
-	if(phase == 1 && t->t_to_die <= t->t_to_eat)
-	{
-		printf("t->t_to_die %u<= t->t_to_eat %u", t->t_to_die, t->t_to_eat);
-		usleep(t->t_to_die * 1000);
-		pthread_mutex_lock(&t->mutex_on_write);
-		t->philo_dead = 1;
-		return (1);
-	}
-	if (phase == 2 && t->t_to_die <= t->t_to_eat + t->t_to_sleep)
-	{
-		printf("dead2\n");
-		usleep(t->t_to_die - t->t_to_eat * 1000);
-		pthread_mutex_lock(&t->mutex_on_write);
-		t->philo_dead = 1;
-		return (1);
-	}
-	else
-		return (0);
-}
-
 void	pt_printf(char *msg, int moment, int philo_nb, t_philo_times *times)
 {
 	pthread_mutex_lock(&times->mutex_on_write);
-	printf("%u %d %s\n", moment, philo_nb, msg);
+	printf("%ums: %d %s\n", moment, philo_nb, msg);
 	pthread_mutex_unlock(&times->mutex_on_write);
 }
 
 void	pt_printfdead(int moment, int philo_nb, t_philo_times *times)
 {
 	pthread_mutex_lock(&times->mutex_on_write);
-	printf("%u %d died\n", moment, philo_nb);
+	printf("%ums: %d died\n", moment, philo_nb);
+	// pthread_mutex_unlock(&times->mutex_on_write);
 }
 
 int	error_arg(void)
 {
-	printf("wrong arguments!\nPlease give the number_of_philosophers");
-	printf(" time_to_die time_to_eat time_to_sleep");
-	printf(" and if wanted: [number_of_times_each_philosopher_must_eat]\n");
-	printf("Times in millisec\nThank you\n");
+	printf("Wrong arguments!\nPlease give: \nthe number_of_philosophers\n");
+	printf("time_to_die\ntime_to_eat\ntime_to_sleep\n");
+	printf("and if wanted: [number_of_times_each_philosopher_must_eat]\n");
+	printf("Times in millisec and numbers > 0\nThank you\n");
 	return (1);
 }
 

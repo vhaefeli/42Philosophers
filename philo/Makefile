@@ -6,7 +6,7 @@
 #    By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/04 16:28:53 by vhaefeli          #+#    #+#              #
-#    Updated: 2022/09/15 17:23:25 by vhaefeli         ###   ########.fr        #
+#    Updated: 2022/09/20 21:15:10 by vhaefeli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ _SRCS 			= philo.c\
 					ft_time.c\
 					eat_sleep_live.c\
 					ft_atoui_check.c\
-					philo_utils.c
+					philo_utils.c\
+					philo_check.c
 
 OBJS 			= $(patsubst %.c, $(OBJS_DIR)/%.o, $(_SRCS))
 SRCS 			= $(patsubst %, $(SRCS_DIR)/%, $(_SRCS))

@@ -6,13 +6,19 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 23:14:49 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/15 17:11:16 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/20 21:10:31 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <unistd.h>
 #include <limits.h>
+
+static int	print_error(const char *str)
+{
+	printf("%s: this should be an unsigned int. please correct your argument\n", str);
+	return (0);
+}
 
 unsigned int	ft_atoui_check(const char *str)
 {
@@ -35,11 +41,7 @@ unsigned int	ft_atoui_check(const char *str)
 		else if (power == 9 && nb < 429496729 && *str >= '0' && *str <= '9')
 			nb = (nb * 10) + (*str - 48);
 		else
-		{
-			write(1, "Please write the different numbers", 34);
-			write(1," in correct Unsigned Int format\n", 32);
-			return (0);
-		}
+			return (print_error(str));
 		str++;
 	}
 	return (nb);

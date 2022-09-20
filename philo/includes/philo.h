@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 21:44:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/16 18:39:50 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/20 21:19:22 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ unsigned int	ft_atoui_check(const char *str);
 unsigned int	get_current_time_ms(void);
 unsigned int	chrono(int start_time);
 
-int		check_death(t_philo_times *t, int phase);
+int	check_args(t_philo_times *t);
+int		check_all_alive(t_philo **philo);
+
 void	pt_printf(char *msg, int moment, int philo_nb, t_philo_times *times);
 void	pt_printfdead(int moment, int philo_nb, t_philo_times *times);
 int		philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg **rout_arg);
@@ -79,5 +81,6 @@ t_philo 		*init_philo(t_philo_times *times, unsigned int i);
 t_philo_times 	*convert_times(int argc, char **argv);
 t_philo			**philo_congregation(int argc, char **argv);
 t_r_arg			**init_routine_arg(t_philo **philo_congr);
+
 
 #endif
