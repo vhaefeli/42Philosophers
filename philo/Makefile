@@ -6,13 +6,13 @@
 #    By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/04 16:28:53 by vhaefeli          #+#    #+#              #
-#    Updated: 2022/09/20 21:54:31 by vhaefeli         ###   ########.fr        #
+#    Updated: 2022/09/21 14:57:35 by vhaefeli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC				= gcc
-CFLAGS 			= -Wall -Wextra -Werror -g -fsanitize=address -fno-omit-frame-pointer
+CFLAGS 			= -Wall -Wextra -Werror -g #-fsanitize=address -fno-omit-frame-pointer
 TARGET 			= philo
 SRCS_DIR 		= ./src
 OBJS_DIR 		= ./obj

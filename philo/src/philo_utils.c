@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:31:38 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/20 22:03:16 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:52:04 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,16 @@ int	error_arg(void)
 
 int	philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg **rout_arg)
 {
-	int i;
+	int	i;
 	int	n;
 
 	i = 0;
 	n = philo_congr[i]->t->nbr_of_philo;
 	pthread_mutex_destroy(&philo_congr[0]->t->mutex_on_write);
+	free(philo_congr[0]->t);
 	while (i < n)
 	{
-	if (pthread_join(th[i], NULL) != 0)
+		if (pthread_join(th[i], NULL) != 0)
 		{
 			printf("error in joining thread\n");
 			return (2);
@@ -60,5 +61,3 @@ int	philo_end(pthread_t *th, t_philo **philo_congr, t_r_arg **rout_arg)
 	free(th);
 	return (0);
 }
-
-

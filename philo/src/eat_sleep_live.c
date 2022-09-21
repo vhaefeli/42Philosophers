@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 14:20:06 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/20 22:04:11 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:41:28 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ int	philo_eat(t_philo **philo, int i)
 		pthread_mutex_unlock(&philo[i]->mutex_on_fork);
 		return (1);
 	}
-	usleep(philo[i]->t->t_to_eat * 1000);
+	fast_usleep(philo, get_current_time_ms(), philo[i]->t->t_to_eat);
 	pthread_mutex_unlock(&philo[n]->mutex_on_fork);
 	pthread_mutex_unlock(&philo[i]->mutex_on_fork);
 	philo[i]->nb_meal_eaten++;
-	if(philo[i]->nb_meal_eaten == philo[i]->t->nb_meal_max_eaten)
+	if (philo[i]->nb_meal_eaten == philo[i]->t->nb_meal_max_eaten)
 	{
 		philo[i]->t->philo_full++;
 		return (1);
@@ -69,24 +69,25 @@ int	philo_sleep(t_philo **philo, int i)
 {
 	if (philo[i]->t->philo_dead > 0)
 		return (1);
-	pt_printf("is sleeping", chrono(philo[i]->t->start_time), i + 1, philo[i]->t);
-	usleep(philo[i]->t->t_to_sleep * 1008);
+	pt_printf("is sleeping", chrono(philo[i]->t->start_time),
+		i + 1, philo[i]->t);
+	fast_usleep(philo, get_current_time_ms(), philo[i]->t->t_to_sleep);
 	return (0);
 }
 
 void	*eat_sleep_think(t_philo **philo, int i)
 {
 	if (i % 2 != 0)
-		usleep(1000);
-	while(philo[i]->t_alive >= get_current_time_ms()
+		usleep(100);
+	while (philo[i]->t_alive >= get_current_time_ms()
 		&& philo[i]->t->philo_dead == 0)
 	{
 		if (philo_eat(philo, i))
-			break;
+			break ;
 		if (philo_sleep(philo, i))
-			break;
+			break ;
 		if (philo[i]->t->philo_dead > 0)
-			break;
+			break ;
 		pt_printf("is thinking",
 			chrono(philo[i]->t->start_time), i + 1, philo[i]->t);
 	}
@@ -100,6 +101,6 @@ void	*eat_sleep_live(void *argument)
 
 	routine_arg = (t_r_arg *)argument;
 	i = routine_arg->i;
-		eat_sleep_think(routine_arg->philo_congr, i);
+	eat_sleep_think(routine_arg->philo_congr, i);
 	return (NULL);
 }

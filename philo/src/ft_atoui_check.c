@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 23:14:49 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/20 21:10:31 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:43:30 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 
 static int	print_error(const char *str)
 {
-	printf("%s: this should be an unsigned int. please correct your argument\n", str);
+	printf("%s: this should be an unsigned int.", str);
+	printf(" please correct your argument\n");
 	return (0);
 }
 
 unsigned int	ft_atoui_check(const char *str)
 {
 	unsigned int	nb;
-	int	power;
+	int				power;
 
 	nb = 0;
 	power = 0;

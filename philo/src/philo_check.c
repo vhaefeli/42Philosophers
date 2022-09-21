@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 21:13:49 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/20 21:19:11 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:50:16 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_args(t_philo_times *t)
 		return (1);
 	if (t->nb_meal_max_eaten == 0)
 		return (1);
-	else 
+	else
 		return (0);
 }
 
@@ -35,12 +35,13 @@ int	check_all_alive(t_philo **philo)
 
 	i = 0;
 	n = philo[0]->t->nbr_of_philo;
-	while (philo[i]->t_alive > get_current_time_ms() && 
-				philo[0]->t->philo_full < n)
+	while (philo[i]->t_alive > get_current_time_ms()
+		&& philo[0]->t->philo_full < n)
 	{
 		i++;
 		if (i == n)
 			i = 0;
+		usleep(100);
 	}
 	if (philo[0]->t->philo_full == n)
 		printf("they have all eaten enough for all their live");
@@ -48,6 +49,9 @@ int	check_all_alive(t_philo **philo)
 	{
 		philo[i]->t->philo_dead = 1;
 		pt_printfdead(chrono(philo[i]->t->start_time), i + 1, philo[i]->t);
+		if (n == 1)
+			pthread_mutex_unlock(&philo[0]->mutex_on_fork);
 	}
-	return(0);
+	usleep(1000);
+	return (0);
 }

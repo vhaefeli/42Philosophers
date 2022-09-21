@@ -6,13 +6,13 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/20 21:20:32 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:08:38 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo *init_philo(t_philo_times *times, unsigned int i)
+t_philo	*init_philo(t_philo_times *times, unsigned int i)
 {
 	t_philo	*philosopher;
 
@@ -24,12 +24,12 @@ t_philo *init_philo(t_philo_times *times, unsigned int i)
 		philosopher->neighbour = i + 1;
 	pthread_mutex_init(&philosopher->mutex_on_fork, NULL);
 	philosopher->t_alive = times->start_time + times->t_to_die;
-	philosopher->nb_meal_eaten = 0;	
+	philosopher->nb_meal_eaten = 0;
 	philosopher->t = times;
 	return (philosopher);
 }
 
-t_philo_times *convert_times(int argc, char **argv)
+t_philo_times	*convert_times(int argc, char **argv)
 {
 	t_philo_times	*times;
 
@@ -51,7 +51,7 @@ t_philo_times *convert_times(int argc, char **argv)
 
 t_philo	**philo_congregation(int argc, char **argv)
 {
-	t_philo 		**philo_congr;
+	t_philo			**philo_congr;
 	t_philo_times	*times;
 	int				nbr_of_philo;
 	int				i;
@@ -59,7 +59,7 @@ t_philo	**philo_congregation(int argc, char **argv)
 	i = 0;
 	nbr_of_philo = ft_atoui_check(argv[1]);
 	times = convert_times(argc, argv);
-	philo_congr = malloc(sizeof(t_philo*) * nbr_of_philo);
+	philo_congr = malloc(sizeof(t_philo *) * nbr_of_philo);
 	while (i < nbr_of_philo)
 	{
 		philo_congr[i] = init_philo(times, i);
@@ -71,12 +71,12 @@ t_philo	**philo_congregation(int argc, char **argv)
 t_r_arg	**init_routine_arg(t_philo **philo_congr)
 {
 	t_r_arg	**routine_arguments;
-	int				i;
-	int				n;
+	int		i;
+	int		n;
 
 	i = 0;
 	n = philo_congr[i]->t->nbr_of_philo;
-	routine_arguments = malloc(sizeof(t_r_arg*) * n);
+	routine_arguments = malloc(sizeof(t_r_arg *) * n);
 	while (i < n)
 	{
 		routine_arguments[i] = malloc(sizeof(t_r_arg));
@@ -87,13 +87,12 @@ t_r_arg	**init_routine_arg(t_philo **philo_congr)
 	return (routine_arguments);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	pthread_t	*th;
-	int			i;
-	int			n;
-	t_philo		**philo_congr;
-	t_r_arg		**routine_arg;
+	pthread_t		*th;
+	unsigned int	i;
+	t_philo			**philo_congr;
+	t_r_arg			**routine_arg;
 
 	i = 0;
 	if (argc != 5 && argc != 6)
@@ -101,10 +100,9 @@ int main(int argc, char **argv)
 	philo_congr = philo_congregation(argc, argv);
 	if (check_args(philo_congr[0]->t))
 		return (error_arg());
-	n = philo_congr[i]->t->nbr_of_philo;
 	routine_arg = init_routine_arg(philo_congr);
-	th = malloc(sizeof(pthread_t) * n);
-	while (i < n)
+	th = malloc(sizeof(pthread_t) * philo_congr[0]->t->nbr_of_philo);
+	while (i < philo_congr[0]->t->nbr_of_philo)
 	{
 		if (pthread_create(th + i, NULL, &eat_sleep_live, routine_arg[i]) != 0)
 		{
@@ -117,4 +115,3 @@ int main(int argc, char **argv)
 	philo_end(th, philo_congr, routine_arg);
 	return (0);
 }
-
