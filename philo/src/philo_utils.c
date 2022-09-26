@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:31:38 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/21 15:52:04 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/26 13:24:57 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	pt_printf(char *msg, int moment, int philo_nb, t_philo_times *times)
 {
 	pthread_mutex_lock(&times->mutex_on_write);
-	printf("%ums: %d %s\n", moment, philo_nb, msg);
+	if (times->philo_dead == 0)
+		printf("%ums: %d %s\n", moment, philo_nb, msg);
 	pthread_mutex_unlock(&times->mutex_on_write);
 }
 

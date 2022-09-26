@@ -6,7 +6,7 @@
 /*   By: vhaefeli <vhaefeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 10:51:25 by vhaefeli          #+#    #+#             */
-/*   Updated: 2022/09/21 16:08:38 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2022/09/26 13:26:48 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	main(int argc, char **argv)
 	t_r_arg			**routine_arg;
 
 	i = 0;
-	if (argc != 5 && argc != 6)
+	if ((argc != 5 && argc != 6) || ft_atoui_check(argv[1]) < 1)
 		return (error_arg());
 	philo_congr = philo_congregation(argc, argv);
 	if (check_args(philo_congr[0]->t))
